@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <div id="user-info">
-      <button @click="toggleUserInfo">{{ showUserInfo ? 'Hide' : 'Show'}} User Details</button>
-      <p v-if="showUserInfo">You're logged in!</p>
+      <button @click="toggle">{{ show ? 'Hide' : 'Show'}} User Details</button>
+      <p v-if="show">You're logged in!</p>
     </div>
     <ProductForm :createProduct="createProduct" />
     <Products :items="products" :remove="deleteProduct" />
@@ -12,6 +12,7 @@
 <script>
 import ProductForm from './components/ProductForm.vue';
 import Products from './components/Products.vue';
+import { toggleMixin } from './mixins/toggle';
 
 export default {
   name: 'app',
@@ -19,10 +20,11 @@ export default {
     ProductForm,
     Products
   },
+  mixins: [toggleMixin],
   data() {
     return {
       products: [],
-      showUserInfo: false
+      // showUserInfo: false
     };
   },
   methods: {
@@ -38,9 +40,9 @@ export default {
     deleteProduct(productId) {
       this.products = this.products.filter(p => p.id !== productId);
     },
-    toggleUserInfo() {
-      this.showUserInfo = !this.showUserInfo;
-    }
+    // toggleUserInfo() {
+    //   this.showUserInfo = !this.showUserInfo;
+    // }
   }
 };
 </script>
