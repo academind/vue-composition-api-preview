@@ -44,7 +44,7 @@ export default {
     }
   },
   watch: {
-    formSubmitted() {
+    submitted() {
       if (this.submitted) {
         this.titleInput = '';
         this.priceInput = '';
