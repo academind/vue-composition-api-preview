@@ -1,5 +1,9 @@
 <template>
   <div id="app">
+    <div id="user-info">
+      <button @click="toggleUserInfo">{{ showUserInfo ? 'Hide' : 'Show'}} User Details</button>
+      <p v-if="showUserInfo">You're logged in!</p>
+    </div>
     <ProductForm :createProduct="createProduct" />
     <Products :items="products" :remove="deleteProduct" />
   </div>
@@ -17,7 +21,8 @@ export default {
   },
   data() {
     return {
-      products: []
+      products: [],
+      showUserInfo: false
     };
   },
   methods: {
@@ -32,6 +37,9 @@ export default {
     },
     deleteProduct(productId) {
       this.products = this.products.filter(p => p.id !== productId);
+    },
+    toggleUserInfo() {
+      this.showUserInfo = !this.showUserInfo;
     }
   }
 };
@@ -48,5 +56,11 @@ html {
 
 body {
   margin: 0;
+}
+
+#user-info {
+  margin: 2rem auto;
+  width: 90%;
+  max-width: 40rem;
 }
 </style>
