@@ -2,17 +2,19 @@
   <form id="product-form" @submit="saveProduct">
     <div class="form-control">
       <label for="title">Title</label>
-      <input type="text" id="title" v-model="titleInput" />
+      <input type="text" id="title" v-model="inputState.title" />
     </div>
     <div class="form-control">
       <label for="price">Price</label>
-      <input type="number" min="0" id="price" step="0.01" v-model="priceInput" />
+      <input type="number" min="0" id="price" step="0.01" v-model="inputState.price" />
     </div>
     <button type="submit" :disabled="!isValid">Save</button>
   </form>
 </template>
 
 <script>
+import { ref, reactive, watch, computed } from '@vue/composition-api';
+
 export default {
   props: {
     createProduct: {
@@ -20,45 +22,88 @@ export default {
       required: true
     }
   },
-  data() {
-    return {
-      titleInput: '',
-      priceInput: '',
-      submitted: false
-    };
-  },
-  computed: {
-    price() {
-      return parseFloat(this.priceInput);
-    },
-    isValid() {
+  setup(props) {
+    const inputState = reactive({
+      title: '',
+      price: ''
+    });
+    const submitted = ref(false);
+
+    const priceAsNumber = computed(() => {
+      return parseFloat(inputState.price);
+    });
+
+    const isValid = computed(() => {
       let isValid = true;
 
-      if (this.titleInput.trim().length === 0) {
+      if (inputState.title.trim().length === 0) {
         isValid = false;
       }
-      if (isNaN(this.price) || this.price <= 0) {
+      if (isNaN(priceAsNumber.value) || priceAsNumber.value <= 0) {
         isValid = false;
       }
       return isValid;
-    }
-  },
-  watch: {
-    submitted() {
-      if (this.submitted) {
-        this.titleInput = '';
-        this.priceInput = '';
-        this.submitted = false;
+    });
+
+    watch(() => {
+      if (submitted.value) {
+        inputState.title = '';
+        inputState.price = '';
+        submitted.value = false;
       }
-    }
-  },
-  methods: {
-    saveProduct(event) {
+    });
+
+    const saveProduct = event => {
       event.preventDefault();
-      this.createProduct(this.titleInput, this.price);
-      this.submitted = true;
-    }
+      props.createProduct(inputState.title, priceAsNumber.value);
+      submitted.value = true;
+    };
+
+    return {
+      inputState,
+      saveProduct,
+      isValid
+    };
   }
+  // data() {
+  //   return {
+  //     titleInput: '',
+  //     priceInput: '',
+  //     submitted: false
+  //   };
+  // },
+  // computed: {
+  //   price() {
+  //     return parseFloat(this.priceInput);
+  //   },
+  //   isValid() {
+  //     let isValid = true;
+
+  //     if (this.titleInput.trim().length === 0) {
+  //       isValid = false;
+  //     }
+  //     if (isNaN(this.price) || this.price <= 0) {
+  //       isValid = false;
+  //     }
+  //     return isValid;
+  //   }
+  // },
+  // watch: {
+  //   submitted() {
+  //     if (this.submitted) {
+  //       this.titleInput = '';
+  //       this.priceInput = '';
+  //       this.submitted = false;
+  //     }
+  //   }
+  // }
+  // methods: {
+  //   saveProduct(event) {
+  //     event.preventDefault();
+  //     this.createProduct(this.titleInput, this.price);
+  //     this.submitted = true;
+  //   }
+  // }
 };
 </script>
 
