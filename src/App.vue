@@ -1,28 +1,52 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <ProductForm :createProduct="createProduct" />
+    <Products :items="products" :remove="deleteProduct" />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import ProductForm from './components/ProductForm.vue';
+import Products from './components/Products.vue';
 
 export default {
   name: 'app',
   components: {
-    HelloWorld
+    ProductForm,
+    Products
+  },
+  data() {
+    return {
+      products: []
+    };
+  },
+  methods: {
+    createProduct(title, price) {
+      const newProduct = {
+        id: Math.random(),
+        title: title,
+        price: price
+      };
+
+      this.products.push(newProduct);
+    },
+    deleteProduct(productId) {
+      this.products = this.products.filter(p => p.id !== productId);
+    }
   }
-}
+};
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: sans-serif;
+}
+
+body {
+  margin: 0;
 }
 </style>
