@@ -1,11 +1,7 @@
-import Vue from 'vue'
-import VueCompositionApi from '@vue/composition-api';
+import { createApp } from 'vue'
 
 import App from './App.vue'
 
-Vue.use(VueCompositionApi);
-Vue.config.productionTip = false
+const app = createApp(App);
 
-new Vue({
-  render: h => h(App),
-}).$mount('#app')
+app.mount('#app');

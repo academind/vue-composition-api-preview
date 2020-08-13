@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { ref } from '@vue/composition-api';
+import { ref } from 'vue';
 
 import ProductForm from './components/ProductForm.vue';
 import Products from './components/Products.vue';

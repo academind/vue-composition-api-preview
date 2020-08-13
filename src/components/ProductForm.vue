@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import { ref, reactive, watch, computed } from '@vue/composition-api';
+import { ref, reactive, watch, computed } from 'vue';
 
 export default {
   props: {
